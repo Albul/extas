@@ -58,12 +58,12 @@ package org.extas.parsers {
 		public function	getValue(section:String, key:String, size:int = 1024):String {
 			
 			var result:String;
-			section = "[" + section + "]";											// Формируем название секции
-			for (var i:int = 0; i < iniFile.length; i++) {							// Обходим весь массив в поиске секции
-				if (iniFile[i] == section) {										// Секцию найдено
-					for (var j:int = i + 1; j < iniFile.length; j++) {				// Обходим массив дальше в поиске ключа
-						if (iniFile[j].slice(0, iniFile[j].indexOf("=")) == key) {							// Ключ найден
-							result = iniFile[j].slice(iniFile[j].indexOf("=") + 1, iniFile[j].length);		// Возвращаем значение ключа
+			section = "[" + section + "]";	// Формируем название секции
+			for (var i:int = 0; i < iniFile.length; i++) {	// Обходим весь массив в поиске секции
+				if (iniFile[i] == section) {	// Секцию найдено
+					for (var j:int = i + 1; j < iniFile.length; j++) {	// Обходим массив дальше в поиске ключа
+						if (iniFile[j].slice(0, iniFile[j].indexOf("=")) == key) {	// Ключ найден
+							result = iniFile[j].slice(iniFile[j].indexOf("=") + 1, iniFile[j].length);	// Возвращаем значение ключа
 							return result.substr(0, size);
 						}
 					}
@@ -81,20 +81,20 @@ package org.extas.parsers {
 		public function	getSection(value:String):String {
 			var currentSection:String;
 			var signEqual:int;
-			for (var i:int = 0; i < iniFile.length; i++) {				// Обходим весь массив в поиске значения
-				if (iniFile[i].charAt(0) == "[") {						// Заходим в новую секцию
-					currentSection = iniFile[i];						// Запоминаем текущую секцию
+			for (var i:int = 0; i < iniFile.length; i++) {	// Обходим весь массив в поиске значения
+				if (iniFile[i].charAt(0) == "[") {	// Заходим в новую секцию
+					currentSection = iniFile[i];	// Запоминаем текущую секцию
 					continue;
 				}
-				signEqual = iniFile[i].indexOf("=");					// Ищем знак равенства в строке
-				if (signEqual != -1) {									// Если найшли знак равенства
-					if (iniFile[i].slice(signEqual + 1, iniFile[i].length) == value) {	// Тогда сравниваем значение этого ключа из входящим значением
-						return currentSection;							// Если они равны тогда возвращаем текущую секцию
+				signEqual = iniFile[i].indexOf("=");	// Ищем знак равенства в строке
+				if (signEqual != -1) {									
+					if (iniFile[i].slice(signEqual + 1, iniFile[i].length) == value) {	
+						return currentSection;							
 					}
 				}
 			}
 			
-			return NULL;					// Если обойдя весь массив не найшли значения тогда возвращаем null
+			return NULL;	// Если обойдя весь массив не найшли значения тогда возвращаем null
 		}	
 		
 		
@@ -106,16 +106,16 @@ package org.extas.parsers {
 		public function	getKey(value:String):String {
 			var currentKey:String;
 			var signEqual:int;
-			for (var i:int = 0; i < iniFile.length; i++) {				// Обходим весь массив в поиске значения
-				signEqual = iniFile[i].indexOf("=");					// Ищем знак равенства в строке
-				if (signEqual != -1) {									// Если найшли знак равенства
-					if (iniFile[i].slice(signEqual + 1, iniFile[i].length) == value) {	// Тогда сравниваем значение этого ключа из входящим значением
-						return iniFile[i].slice(0, signEqual);							// Если они равны тогда возвращаем значение ключа
+			for (var i:int = 0; i < iniFile.length; i++) {	// Обходим весь массив в поиске значения
+				signEqual = iniFile[i].indexOf("=");					
+				if (signEqual != -1) {									
+					if (iniFile[i].slice(signEqual + 1, iniFile[i].length) == value) {	
+						return iniFile[i].slice(0, signEqual);							
 					}
 				}
 			}
 			
-			return NULL;					// Если обойдя весь массив не найшли значения тогда возвращаем null
+			return NULL;	// Если обойдя весь массив не найшли значения тогда возвращаем null
 		}
 				
 		
@@ -140,13 +140,13 @@ package org.extas.parsers {
 		 */
 		private function parseIni(data:String):void {
 			var strUtils:StringUtils = new StringUtils();
-			iniFile = strUtils.stringToMultiString(data);		// Разбиваем многострочный текст на массив строк
+			iniFile = strUtils.stringToMultiString(data);	// Разбиваем многострочный текст на массив строк
 			
 			var str:String;
 			
 			for (var i:int = 0; i < iniFile.length ; i++) {
 				str = iniFile[i];
-				str = strUtils.trim(str, " ");			// Обрезаем в каждой строке пробелы в начале и в конце
+				str = strUtils.trim(str, " ");	// Обрезаем в каждой строке пробелы в начале и в конце
 				str = str.substr(0, str.length - 1);	// Удаляем последний символ (перевод каретки)
 				iniFile[i] = str;
 			}
