@@ -1,32 +1,28 @@
-/*
- * 
- * Copyright (c) 2012, Albul Alexandr
- 
-	This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+/**
+ * Copyright (c) 2011-2012 Alexandr Albul
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.extas.utils {
 	import flash.utils.ByteArray;
-	
-	
+
 	/**
 	* 
-	* Класс содержит расширенные функции для работы со строками
+	* Additional string functions
 	* 
 	*/
 	public class StringUtils {
-				
-		
+
 		/**
 		 * Конвертация строки из cp-1251 в UTF-8
 		 * 
@@ -41,8 +37,7 @@ package org.extas.utils {
 			}
 			return str;
 		}
-		
-		
+
 		/**
 		 * Конвертация строки из UTF-8 в cp-1251
 		 * 
@@ -55,11 +50,9 @@ package org.extas.utils {
 			return result.toString();
 		}
 
-		
 		public function replace(str:String, oldSubStr:String, newSubStr:String):String {
 			return str.split(oldSubStr).join(newSubStr);
 		}
-		
 
 		/**
 		 * Ф-я обрезает спереди и сзади строки все символы char идущих в подстроке
@@ -71,7 +64,6 @@ package org.extas.utils {
 			return trimFront(trimBack(str, char), char);
 		}
 
-		
 		public function trimFront(str:String, char:String):String {
 			char = stringToCharacter(char);
 			if (str.charAt(0) == char) {
@@ -80,34 +72,24 @@ package org.extas.utils {
 			return str;
 		}
 
-		
 		public function trimBack(str:String, char:String):String {
 			char = stringToCharacter(char);
-			if (str.charAt(str.length - 1) == char) {							// 2 потому как последний символ это перевод каретки
+			if (str.charAt(str.length - 1) == char) {
 				str = trimBack(str.substring(0, str.length - 1), char);
 			}
 			return str;
 		}
 
-		
 		public function stringToCharacter(str:String):String {
 			if (str.length == 1) {
 				return str;
 			}
 			return str.slice(0, 1);
 		}
-		
-		
-		/**
-		 * Функция разбивает текст (который содержится в переменной String) в массив строк.
-		 * @param	str
-		 * @return
-		 */
+
 		public function stringToMultiString(str:String):Array {
 			return str.split("\n", 0x7fffffff); 
 		}
-		
-		
-	}
 
+	}
 }
