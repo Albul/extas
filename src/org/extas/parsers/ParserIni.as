@@ -23,45 +23,39 @@ package org.extas.parsers {
 	import org.extas.utils.StringUtils;
 
 	/**
-	 * 
-	 * Класс отвечает за загрузку и доступ к секциям и ключям ини-файла
-	 * 
+	 * Class is responsible for loading and access to the sections and keys ini-files
 	 */
 	public class ParserIni extends EventDispatcher {
-		
+
 		public static const NULL:String = "null";
 
 		private var iniLoader:URLLoader;
 		private var iniFile:Array;
-		
+
 		public function ParserIni(url:String = null) {
 			iniLoader = new URLLoader();
 			iniLoader.addEventListener(Event.COMPLETE, onLoaderComplete);
 			iniLoader.addEventListener(IOErrorEvent.IO_ERROR, onIOError);
-			
-			if (url != null) 
+
+			if (url != null)
 				load(url);
 		}
 
-
 		/**
-		 *	Получить значение ключа key, в секции section
-		 * 
-		 * @param 	section  Секция ини-файла (например bot1)
-		 * @param 	key Название ключа в секции (например position)
-		 * @param 	size Максимальный размер буфера, который будет возвращен
-		 * @return	Возвращает значение ключа
-		 * 
-		 */	
+		 * Get the key value in the section
+		 * @param section Ini-file section
+		 * @param key The key name in the section
+		 * @param size Maximal size of the buffer that will be returned
+		 * @return
+		 */
 		public function getValue(section:String, key:String, size:int = 1024):String {
-			
 			var result:String;
-			section = "[" + section + "]";	// Формируем название секции
-			for (var i:int = 0; i < iniFile.length; i++) {	// Обходим весь массив в поиске секции
-				if (iniFile[i] == section) {	// Секцию найдено
-					for (var j:int = i + 1; j < iniFile.length; j++) {	// Обходим массив дальше в поиске ключа
-						if (iniFile[j].slice(0, iniFile[j].indexOf("=")) == key) {	// Ключ найден
-							result = iniFile[j].slice(iniFile[j].indexOf("=") + 1, iniFile[j].length);	// Возвращаем значение ключа
+			section = "[" + section + "]";
+			for (var i:int = 0; i < iniFile.length; i++) {
+				if (iniFile[i] == section) {
+					for (var j:int = i + 1; j < iniFile.length; j++) {
+						if (iniFile[j].slice(0, iniFile[j].indexOf("=")) == key) {
+							result = iniFile[j].slice(iniFile[j].indexOf("=") + 1, iniFile[j].length);
 							return result.substr(0, size);
 						}
 					}
@@ -69,102 +63,91 @@ package org.extas.parsers {
 			}
 			return NULL;
 		}
-		
-		
+
 		/**
-		 * Получить имя секции в которой находится значение value
-		 * @param	value Значение которое ищем
+		 * Get the section name for a given value
+		 * @param value
 		 * @return
 		 */
 		public function getSection(value:String):String {
 			var currentSection:String;
 			var signEqual:int;
-			for (var i:int = 0; i < iniFile.length; i++) {	// Обходим весь массив в поиске значения
-				if (iniFile[i].charAt(0) == "[") {	// Заходим в новую секцию
-					currentSection = iniFile[i];	// Запоминаем текущую секцию
+			for (var i:int = 0; i < iniFile.length; i++) {
+				if (iniFile[i].charAt(0) == "[") {
+					currentSection = iniFile[i];
 					continue;
 				}
-				signEqual = iniFile[i].indexOf("=");	// Ищем знак равенства в строке
-				if (signEqual != -1) {									
-					if (iniFile[i].slice(signEqual + 1, iniFile[i].length) == value) {	
-						return currentSection;							
+				signEqual = iniFile[i].indexOf("=");
+				if (signEqual != -1) {
+					if (iniFile[i].slice(signEqual + 1, iniFile[i].length) == value) {
+						return currentSection;
 					}
 				}
 			}
-			
-			return NULL;	// Если обойдя весь массив не найшли значения тогда возвращаем null
-		}	
-		
-		
+			return NULL;
+		}
+
 		/**
-		 * Получить имя ключа которому присвоено значение value
-		 * @param	value Значение которое ищем
+		 * Get the key name for a given value
+		 * @param value
 		 * @return
 		 */
 		public function	getKey(value:String):String {
 			var currentKey:String;
 			var signEqual:int;
-			for (var i:int = 0; i < iniFile.length; i++) {	// Обходим весь массив в поиске значения
-				signEqual = iniFile[i].indexOf("=");					
-				if (signEqual != -1) {									
-					if (iniFile[i].slice(signEqual + 1, iniFile[i].length) == value) {	
-						return iniFile[i].slice(0, signEqual);							
+			for (var i:int = 0; i < iniFile.length; i++) {
+				signEqual = iniFile[i].indexOf("=");
+				if (signEqual != -1) {
+					if (iniFile[i].slice(signEqual + 1, iniFile[i].length) == value) {
+						return iniFile[i].slice(0, signEqual);
 					}
 				}
 			}
-			
-			return NULL;	// Если обойдя весь массив не найшли значения тогда возвращаем null
+			return NULL;
 		}
-				
-		
+
 		/**
-		 *	Загрузить ини-файл
-		 * 
-		 * @param url - путь к ини-файлу
+		 * Upload ini-file
+		 * @param url
 		 */
 		public function load(url:String):void {
 			var request:URLRequest = new URLRequest(url);
 			iniLoader.load(request);
 		}
 
-		
+
 		public function parse(data:String):void {
 			parseIni(data);
 		}
-		
-		
-		/**
-		 * @private
-		 */
+
+
+		//--------------------------------------------------------------------------
+		//
+		//  Private methods
+		//
+		//--------------------------------------------------------------------------
+
+
 		private function parseIni(data:String):void {
-			var strUtils:StringUtils = new StringUtils();
-			iniFile = strUtils.stringToMultiString(data);	// Разбиваем многострочный текст на массив строк
-			
-			var str:String;
-			
+			var
+					strUtils:StringUtils = new StringUtils(),
+					str:String;
+			iniFile = strUtils.stringToMultiString(data);
 			for (var i:int = 0; i < iniFile.length ; i++) {
 				str = iniFile[i];
-				str = strUtils.trim(str, " ");	// Обрезаем в каждой строке пробелы в начале и в конце
-				str = str.substr(0, str.length - 1);	// Удаляем последний символ (перевод каретки)
+				str = strUtils.trim(str, " ");
+				str = str.substr(0, str.length - 1);
 				iniFile[i] = str;
 			}
-			
-			dispatchEvent(new Event(Event.COMPLETE));	// Создаем событие (ини-файл загружен и разобран)
+			dispatchEvent(new Event(Event.COMPLETE));
 		}
-		
-		
-		/**
-		 * Обработчик на завершение загрузки файла
-		 */
+
 		private function onLoaderComplete(e:Event):void {
 			parseIni(String(e.target.data));
 		}
 
-		
 		private function onIOError(event:IOErrorEvent):void {
 			dispatchEvent(event);
 		}
-		
-				
 	}
 }
