@@ -35,13 +35,6 @@ package org.extas.utils {
 		}
 
 		static public function signum(val:Number):Number {
-//			if (val == 0) {
-//				return 0;
-//			} else if (val < 0) {
-//				return -1;
-//			} else {
-//				return 1;
-//			}
 			return (val == 0? 0 : (val < 0? -1 : 1));
 		}
 

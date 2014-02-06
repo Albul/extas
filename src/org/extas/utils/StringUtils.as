@@ -24,9 +24,8 @@ package org.extas.utils {
 	public class StringUtils {
 
 		/**
-		 * Конвертация строки из cp-1251 в UTF-8
-		 * 
-		 * @param	data Входящая строка в кодировке cp-1251
+		 * Convert string from cp-1251 to UTF-8
+		 * @param data
 		 * @return
 		 */
 		static public function toUTF(data:String):String {
@@ -39,9 +38,8 @@ package org.extas.utils {
 		}
 
 		/**
-		 * Конвертация строки из UTF-8 в cp-1251
-		 * 
-		 * @param	data Входящая строка в кодировке UTF-8
+		 * Convert string from UTF-8 to cp-1251
+		 * @param data
 		 * @return
 		 */
 		static public function toANSII(data:String):String {
@@ -55,9 +53,9 @@ package org.extas.utils {
 		}
 
 		/**
-		 * Ф-я обрезает спереди и сзади строки все символы char идущих в подстроке
-		 * @param	str
-		 * @param	char
+		 * Trim the characters in front and back of the string
+		 * @param str
+		 * @param char
 		 * @return
 		 */
 		public function trim(str:String, char:String):String {
