@@ -115,7 +115,6 @@ package org.extas.parsers {
 			iniLoader.load(request);
 		}
 
-
 		public function parse(data:String):void {
 			parseIni(data);
 		}
