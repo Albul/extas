@@ -128,9 +128,7 @@ package org.extas.parsers {
 
 
 		private function parseIni(data:String):void {
-			var
-					strUtils:StringUtils = new StringUtils(),
-					str:String;
+			var strUtils:StringUtils = new StringUtils(), str:String;
 			iniFile = strUtils.stringToMultiString(data);
 			for (var i:int = 0; i < iniFile.length ; i++) {
 				str = iniFile[i];
