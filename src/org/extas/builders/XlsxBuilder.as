@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.extas.utils {
+package org.extas.builders {
 
 import deng.fzip.*;
 
@@ -22,7 +22,11 @@ import flash.net.FileReference;
 import flash.utils.*;
 import flash.utils.ByteArray;
 
-public class XlsxUtils {
+/**
+ * Class is responsible for creating xlsx files on pure as3
+ * You need to include Fzip library to your project
+ */
+public class XlsxBuilder {
 
 	public static var openXMLNS:Namespace = new Namespace("http://schemas.openxmlformats.org/spreadsheetml/2006/main");
 	public static var doubleSpace:RegExp = /  /g;
@@ -34,7 +38,7 @@ public class XlsxUtils {
 
 	default xml namespace = openXMLNS;
 
-	public function XlsxUtils(fileName:String = null) {
+	public function XlsxBuilder(fileName:String = null) {
 		_fileName = fileName;
 		_zipData = new FZip();
 		createXlsx();
